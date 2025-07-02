@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: loans
+  sql:
+    init:
+      mode: always
+  r2dbc:
+    url: r2dbc:mysql://localhost:3311/loans-db
+    username: loans
+    password: loans
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          r2dbc:
+            convert: DEBUG
+        io:
+          r2dbc:
+            spi: DEBUG
+
+server:
+  port: 8080
