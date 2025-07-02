@@ -1,0 +1,33 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: user-service
+    bad_request: 400
+    conflict: 409
+    success: 200
+    not_found: 404
+    created: 201
+
+  datasource:
+    url: jdbc:mysql://localhost:3311/user-db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: user
+    password: user
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+app:
+  config:
+    keycloak:
+      server-url: http://localhost:8571
+      realm: banking-service
+      client-id: banking-service-client
+      client-secret: zqheO7C5wcuTXsxFElrz3CLiYP8s5t6x
