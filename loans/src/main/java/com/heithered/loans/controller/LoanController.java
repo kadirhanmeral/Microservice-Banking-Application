@@ -12,6 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -27,7 +28,15 @@ public class LoanController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public Flux<LoanResponseDto> getLoansByCustomer(@PathVariable UUID customerId) {
+    public
+    Mono<ResponseEntity<List<LoanResponseDto>>> getLoansByCustomer(@PathVariable UUID customerId) {
+        return loanService.getLoansByCustomerId(customerId)
+                .collectList()
+                .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/customer/{customerId}/stream")
+    public Flux<LoanResponseDto> streamLoansByCustomer(@PathVariable UUID customerId) {
         return loanService.getLoansByCustomerId(customerId);
     }
 
@@ -56,7 +65,21 @@ public class LoanController {
     }
 
     @GetMapping("/all")
-    public Flux<LoanResponseDto> getLoans(
+    public Mono<ResponseEntity<List<LoanResponseDto>>> getLoans(
+            @RequestParam(required = false) UUID customerId,
+            @RequestParam(required = false) LoanStatus status,
+            @RequestParam(required = false) LoanType loanType,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return loanService.getLoansByFilters(customerId, status, loanType, startDate, endDate, page, size)
+                .collectList()
+                .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/all/stream")
+    public Flux<LoanResponseDto> streamLoans(
             @RequestParam(required = false) UUID customerId,
             @RequestParam(required = false) LoanStatus status,
             @RequestParam(required = false) LoanType loanType,
