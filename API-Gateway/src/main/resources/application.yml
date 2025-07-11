@@ -51,7 +51,7 @@ spring:
           banking-service-client:
             provider: keycloak
             client-id: banking-service-client
-            client-secret: MV3ZixOpL7A79aM54oJD9Sy37LA9ldp3
+            client-secret: 'your_client_secret_key'
             authorization-grant-type: client_credentials
             redirect-uri: http://keycloak:8080/login/oauth2/code/keycloak
             scope: openid
