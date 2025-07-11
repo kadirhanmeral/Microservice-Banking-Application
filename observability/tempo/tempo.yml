@@ -1,0 +1,35 @@
+server:
+  http_listen_port: 3100
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+        http:
+
+ingester:
+  trace_idle_period: 10s
+  max_block_bytes: 1000000
+  max_block_duration: 5m
+
+compactor:
+  compaction:
+    compaction_window: 1h
+    max_compaction_objects: 1000000
+    block_retention: 1h
+    compacted_block_retention: 10m
+
+storage:
+  trace:
+    backend: s3
+    s3:
+      endpoint: minio:9000
+      bucket: tempo-data
+      access_key: loki
+      secret_key: supersecret
+      insecure: true
+      forcepathstyle: true
+    pool:
+      max_workers: 100
+      queue_depth: 10000

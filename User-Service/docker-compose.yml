@@ -1,0 +1,21 @@
+services:
+  mysql-user:
+    image: mysql:8
+    container_name: mysql-user-db
+    environment:
+      MYSQL_DATABASE: user-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: user
+    ports:
+      - "3311:3306"
+    networks:
+      - bank-net
+    volumes:
+      - user-db:/var/lib/mysql
+
+networks:
+  bank-net:
+
+volumes:
+  user-db:

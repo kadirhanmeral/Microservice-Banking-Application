@@ -1,0 +1,21 @@
+services:
+  mysql-user:
+    image: mysql:8
+    container_name: mysql-payment-db
+    environment:
+      MYSQL_DATABASE: payment-db
+      MYSQL_USER: payment
+      MYSQL_PASSWORD: payment
+      MYSQL_ROOT_PASSWORD: payment
+    ports:
+      - "3313:3306"
+    networks:
+      - bank-net
+    volumes:
+      - user-db:/var/lib/mysql
+
+networks:
+  bank-net:
+
+volumes:
+  user-db:

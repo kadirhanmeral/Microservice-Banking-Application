@@ -1,0 +1,21 @@
+services:
+  mysql-user:
+    image: mysql:8
+    container_name: mysql-loans-db
+    environment:
+      MYSQL_DATABASE: loans-db
+      MYSQL_USER: loans
+      MYSQL_PASSWORD: loans
+      MYSQL_ROOT_PASSWORD: loans
+    ports:
+      - "3312:3306"
+    networks:
+      - bank-net
+    volumes:
+      - loans-db:/var/lib/mysql
+
+networks:
+  bank-net:
+
+volumes:
+  loans-db:

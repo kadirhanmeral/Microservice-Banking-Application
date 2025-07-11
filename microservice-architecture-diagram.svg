@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1400" height="1000" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="clientGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="gatewayGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="serviceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EF4444;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="databaseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FBBF24;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="infraGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6B7280;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9CA3AF;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="observabilityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A78BFA;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Arrow markers -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151" />
+    </marker>
+    
+    <marker id="arrowheadBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3B82F6" />
+    </marker>
+    
+    <marker id="arrowheadGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981" />
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1400" height="1000" fill="#F8FAFC"/>
+  
+  <!-- Title -->
+  <text x="700" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1F2937">
+    Microservice Banking Application Architecture
+  </text>
+  
+  <!-- Client Layer -->
+  <rect x="50" y="60" width="1300" height="80" rx="10" fill="url(#clientGradient)" opacity="0.1"/>
+  <text x="700" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1F2937">
+    Client Layer
+  </text>
+  
+  <!-- React Frontend -->
+  <rect x="100" y="100" width="200" height="60" rx="8" fill="url(#clientGradient)" stroke="#4F46E5" stroke-width="2"/>
+  <text x="200" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    React Frontend
+  </text>
+  <text x="200" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    (Port 5173)
+  </text>
+  
+  <!-- Mobile App -->
+  <rect x="350" y="100" width="200" height="60" rx="8" fill="url(#clientGradient)" stroke="#4F46E5" stroke-width="2"/>
+  <text x="450" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Mobile App
+  </text>
+  <text x="450" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    (Future)
+  </text>
+  
+  <!-- External APIs -->
+  <rect x="600" y="100" width="200" height="60" rx="8" fill="url(#clientGradient)" stroke="#4F46E5" stroke-width="2"/>
+  <text x="700" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    External APIs
+  </text>
+  <text x="700" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    (Third Party)
+  </text>
+  
+  <!-- Admin Dashboard -->
+  <rect x="850" y="100" width="200" height="60" rx="8" fill="url(#clientGradient)" stroke="#4F46E5" stroke-width="2"/>
+  <text x="950" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Admin Dashboard
+  </text>
+  <text x="950" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    (Internal)
+  </text>
+  
+  <!-- Gateway Layer -->
+  <rect x="50" y="180" width="1300" height="80" rx="10" fill="url(#gatewayGradient)" opacity="0.1"/>
+  <text x="700" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1F2937">
+    Gateway &amp; Discovery Layer
+  </text>
+  
+  <!-- API Gateway -->
+  <rect x="100" y="220" width="200" height="60" rx="8" fill="url(#gatewayGradient)" stroke="#059669" stroke-width="2"/>
+  <text x="200" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    API Gateway
+  </text>
+  <text x="200" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    (Port 8081)
+  </text>
+  
+  <!-- Service Registry -->
+  <rect x="350" y="220" width="200" height="60" rx="8" fill="url(#gatewayGradient)" stroke="#059669" stroke-width="2"/>
+  <text x="450" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Eureka Server
+  </text>
+  <text x="450" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    (Port 8761)
+  </text>
+  
+  <!-- Keycloak -->
+  <rect x="600" y="220" width="200" height="60" rx="8" fill="url(#gatewayGradient)" stroke="#059669" stroke-width="2"/>
+  <text x="700" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Keycloak Auth
+  </text>
+  <text x="700" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    (Port 8572)
+  </text>
+  
+  <!-- Load Balancer -->
+  <rect x="850" y="220" width="200" height="60" rx="8" fill="url(#gatewayGradient)" stroke="#059669" stroke-width="2"/>
+  <text x="950" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Load Balancer
+  </text>
+  <text x="950" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    (Nginx)
+  </text>
+  
+  <!-- Microservices Layer -->
+  <rect x="50" y="300" width="1300" height="200" rx="10" fill="url(#serviceGradient)" opacity="0.1"/>
+  <text x="700" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1F2937">
+    Microservices Layer
+  </text>
+  
+  <!-- Row 1: Core Services -->
+  <!-- User Service -->
+  <rect x="100" y="350" width="180" height="50" rx="8" fill="url(#serviceGradient)" stroke="#DC2626" stroke-width="2"/>
+  <text x="190" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    User Service
+  </text>
+  <text x="190" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 8082)
+  </text>
+  
+  <!-- Account Service -->
+  <rect x="320" y="350" width="180" height="50" rx="8" fill="url(#serviceGradient)" stroke="#DC2626" stroke-width="2"/>
+  <text x="410" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Account Service
+  </text>
+  <text x="410" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 8083)
+  </text>
+  
+  <!-- Payment Service -->
+  <rect x="540" y="350" width="180" height="50" rx="8" fill="url(#serviceGradient)" stroke="#DC2626" stroke-width="2"/>
+  <text x="630" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Payment Service
+  </text>
+  <text x="630" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 8084)
+  </text>
+  
+  <!-- Loans Service -->
+  <rect x="760" y="350" width="180" height="50" rx="8" fill="url(#serviceGradient)" stroke="#DC2626" stroke-width="2"/>
+  <text x="850" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Loans Service
+  </text>
+  <text x="850" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 8080)
+  </text>
+  
+  <!-- Notification Service -->
+  <rect x="980" y="350" width="180" height="50" rx="8" fill="url(#serviceGradient)" stroke="#DC2626" stroke-width="2"/>
+  <text x="1070" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Notification Service
+  </text>
+  <text x="1070" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 8085)
+  </text>
+  
+  <!-- Row 2: Service Details -->
+  <!-- User Service Details -->
+  <rect x="100" y="420" width="180" height="40" rx="6" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1"/>
+  <text x="190" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • User Management
+  </text>
+  <text x="190" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • Authentication
+  </text>
+  
+  <!-- Account Service Details -->
+  <rect x="320" y="420" width="180" height="40" rx="6" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1"/>
+  <text x="410" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • Account Operations
+  </text>
+  <text x="410" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • Balance Management
+  </text>
+  
+  <!-- Payment Service Details -->
+  <rect x="540" y="420" width="180" height="40" rx="6" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1"/>
+  <text x="630" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • Payment Processing
+  </text>
+  <text x="630" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • Transaction Management
+  </text>
+  
+  <!-- Loans Service Details -->
+  <rect x="760" y="420" width="180" height="40" rx="6" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1"/>
+  <text x="850" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • Loan Management
+  </text>
+  <text x="850" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • Approval Workflow
+  </text>
+  
+  <!-- Notification Service Details -->
+  <rect x="980" y="420" width="180" height="40" rx="6" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1"/>
+  <text x="1070" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • Event Notifications
+  </text>
+  <text x="1070" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991B1B">
+    • Message Queue
+  </text>
+  
+  <!-- Data Layer -->
+  <rect x="50" y="540" width="1300" height="120" rx="10" fill="url(#databaseGradient)" opacity="0.1"/>
+  <text x="700" y="565" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1F2937">
+    Data Layer
+  </text>
+  
+  <!-- Databases -->
+  <!-- User DB -->
+  <rect x="100" y="580" width="150" height="50" rx="8" fill="url(#databaseGradient)" stroke="#F59E0B" stroke-width="2"/>
+  <text x="175" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    User DB
+  </text>
+  <text x="175" y="615" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (MySQL - 3311)
+  </text>
+  
+  <!-- Account DB -->
+  <rect x="280" y="580" width="150" height="50" rx="8" fill="url(#databaseGradient)" stroke="#F59E0B" stroke-width="2"/>
+  <text x="355" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Account DB
+  </text>
+  <text x="355" y="615" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (MySQL - 3311)
+  </text>
+  
+  <!-- Payment DB -->
+  <rect x="460" y="580" width="150" height="50" rx="8" fill="url(#databaseGradient)" stroke="#F59E0B" stroke-width="2"/>
+  <text x="535" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Payment DB
+  </text>
+  <text x="535" y="615" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (MySQL - 3313)
+  </text>
+  
+  <!-- Loans DB -->
+  <rect x="640" y="580" width="150" height="50" rx="8" fill="url(#databaseGradient)" stroke="#F59E0B" stroke-width="2"/>
+  <text x="715" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Loans DB
+  </text>
+  <text x="715" y="615" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (MySQL - 3312)
+  </text>
+  
+  <!-- Keycloak DB -->
+  <rect x="820" y="580" width="150" height="50" rx="8" fill="url(#databaseGradient)" stroke="#F59E0B" stroke-width="2"/>
+  <text x="895" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Keycloak DB
+  </text>
+  <text x="895" y="615" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (PostgreSQL - 5432)
+  </text>
+  
+  <!-- Message Queue -->
+  <rect x="1000" y="580" width="150" height="50" rx="8" fill="url(#databaseGradient)" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1075" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    RabbitMQ
+  </text>
+  <text x="1075" y="615" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 5672)
+  </text>
+  
+  <!-- Infrastructure Layer -->
+  <rect x="50" y="700" width="1300" height="120" rx="10" fill="url(#infraGradient)" opacity="0.1"/>
+  <text x="700" y="725" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1F2937">
+    Infrastructure &amp; Observability Layer
+  </text>
+  
+  <!-- Infrastructure Components -->
+  <!-- Docker -->
+  <rect x="100" y="740" width="120" height="50" rx="8" fill="url(#infraGradient)" stroke="#6B7280" stroke-width="2"/>
+  <text x="160" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Docker
+  </text>
+  <text x="160" y="775" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    Containers
+  </text>
+  
+  <!-- MinIO -->
+  <rect x="240" y="740" width="120" height="50" rx="8" fill="url(#infraGradient)" stroke="#6B7280" stroke-width="2"/>
+  <text x="300" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    MinIO
+  </text>
+  <text x="300" y="775" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    Object Storage
+  </text>
+  
+  <!-- Observability Stack -->
+  <!-- Prometheus -->
+  <rect x="380" y="740" width="120" height="50" rx="8" fill="url(#observabilityGradient)" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="440" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Prometheus
+  </text>
+  <text x="440" y="775" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 9090)
+  </text>
+  
+  <!-- Grafana -->
+  <rect x="520" y="740" width="120" height="50" rx="8" fill="url(#observabilityGradient)" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="580" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Grafana
+  </text>
+  <text x="580" y="775" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 3000)
+  </text>
+  
+  <!-- Loki -->
+  <rect x="660" y="740" width="120" height="50" rx="8" fill="url(#observabilityGradient)" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="720" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Loki
+  </text>
+  <text x="720" y="775" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 3100)
+  </text>
+  
+  <!-- Tempo -->
+  <rect x="800" y="740" width="120" height="50" rx="8" fill="url(#observabilityGradient)" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="860" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Tempo
+  </text>
+  <text x="860" y="775" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 3110)
+  </text>
+  
+  <!-- Alloy -->
+  <rect x="940" y="740" width="120" height="50" rx="8" fill="url(#observabilityGradient)" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="1000" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    Alloy
+  </text>
+  <text x="1000" y="775" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    (Port 12345)
+  </text>
+  
+  <!-- OpenTelemetry -->
+  <rect x="1080" y="740" width="120" height="50" rx="8" fill="url(#observabilityGradient)" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="1140" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">
+    OpenTelemetry
+  </text>
+  <text x="1140" y="775" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    Tracing
+  </text>
+  
+  <!-- Connection Lines -->
+  <!-- Client to Gateway -->
+  <line x1="200" y1="160" x2="200" y2="220" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrowheadBlue)"/>
+  <line x1="450" y1="160" x2="450" y2="220" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrowheadBlue)"/>
+  <line x1="700" y1="160" x2="700" y2="220" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrowheadBlue)"/>
+  <line x1="950" y1="160" x2="950" y2="220" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrowheadBlue)"/>
+  
+  <!-- Gateway to Services -->
+  <line x1="200" y1="280" x2="190" y2="350" stroke="#10B981" stroke-width="2" marker-end="url(#arrowheadGreen)"/>
+  <line x1="200" y1="280" x2="410" y2="350" stroke="#10B981" stroke-width="2" marker-end="url(#arrowheadGreen)"/>
+  <line x1="200" y1="280" x2="630" y2="350" stroke="#10B981" stroke-width="2" marker-end="url(#arrowheadGreen)"/>
+  <line x1="200" y1="280" x2="850" y2="350" stroke="#10B981" stroke-width="2" marker-end="url(#arrowheadGreen)"/>
+  <line x1="200" y1="280" x2="1070" y2="350" stroke="#10B981" stroke-width="2" marker-end="url(#arrowheadGreen)"/>
+  
+  <!-- Service to Database -->
+  <line x1="190" y1="400" x2="175" y2="580" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="410" y1="400" x2="355" y2="580" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="630" y1="400" x2="535" y2="580" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="850" y1="400" x2="715" y2="580" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="700" y1="280" x2="895" y2="580" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Inter-service Communication -->
+  <!-- Payment to Account -->
+  <line x1="540" y1="375" x2="410" y2="375" stroke="#DC2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Payment to User -->
+  <line x1="540" y1="375" x2="190" y2="375" stroke="#DC2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Account to Notification -->
+  <line x1="410" y1="375" x2="1070" y2="375" stroke="#DC2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Payment to Loans -->
+  <line x1="630" y1="375" x2="850" y2="375" stroke="#DC2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- User to Account -->
+  <line x1="190" y1="375" x2="410" y2="375" stroke="#DC2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Message Queue Connections -->
+  <line x1="1075" y1="630" x2="1070" y2="400" stroke="#F59E0B" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  <line x1="1075" y1="630" x2="630" y2="400" stroke="#F59E0B" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  <line x1="1075" y1="630" x2="850" y2="400" stroke="#F59E0B" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Observability Connections -->
+  <line x1="440" y1="790" x2="190" y2="400" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+  <line x1="440" y1="790" x2="410" y2="400" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+  <line x1="440" y1="790" x2="630" y2="400" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+  <line x1="440" y1="790" x2="850" y2="400" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+  <line x1="440" y1="790" x2="1070" y2="400" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="850" width="1300" height="120" rx="10" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="700" y="875" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1F2937">
+    Architecture Legend
+  </text>
+  
+  <!-- Legend Items -->
+  <line x1="100" y1="890" x2="130" y2="890" stroke="#3B82F6" stroke-width="3" marker-end="url(#arrowheadBlue)"/>
+  <text x="140" y="895" font-family="Arial, sans-serif" font-size="12" fill="#1F2937">Client to Gateway</text>
+  
+  <line x1="300" y1="890" x2="330" y2="890" stroke="#10B981" stroke-width="3" marker-end="url(#arrowheadGreen)"/>
+  <text x="340" y="895" font-family="Arial, sans-serif" font-size="12" fill="#1F2937">Gateway to Services</text>
+  
+  <line x1="500" y1="890" x2="530" y2="890" stroke="#DC2626" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="540" y="895" font-family="Arial, sans-serif" font-size="12" fill="#1F2937">Inter-service Communication</text>
+  
+  <line x1="750" y1="890" x2="780" y2="890" stroke="#F59E0B" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="790" y="895" font-family="Arial, sans-serif" font-size="12" fill="#1F2937">Database Connections</text>
+  
+  <line x1="1000" y1="890" x2="1030" y2="890" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+  <text x="1040" y="895" font-family="Arial, sans-serif" font-size="12" fill="#1F2937">Observability</text>
+  
+  <!-- Technology Stack -->
+  <text x="100" y="930" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1F2937">Technology Stack:</text>
+  <text x="100" y="950" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Backend: Spring Boot, Spring Cloud, Java 17</text>
+  <text x="100" y="965" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Frontend: React 19, Tailwind CSS, Vite</text>
+  <text x="100" y="980" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Database: MySQL, PostgreSQL</text>
+  
+  <text x="400" y="930" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1F2937">Key Features:</text>
+  <text x="400" y="950" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Service Discovery (Eureka)</text>
+  <text x="400" y="965" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• API Gateway &amp; Load Balancing</text>
+  <text x="400" y="980" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Authentication (Keycloak)</text>
+  
+  <text x="700" y="930" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1F2937">Observability:</text>
+  <text x="700" y="950" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Metrics: Prometheus + Grafana</text>
+  <text x="700" y="965" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Logging: Loki</text>
+  <text x="700" y="980" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Tracing: Tempo + OpenTelemetry</text>
+  
+  <text x="1000" y="930" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1F2937">Deployment:</text>
+  <text x="1000" y="950" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Containerized with Docker</text>
+  <text x="1000" y="965" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Orchestrated with Docker Compose</text>
+  <text x="1000" y="980" font-family="Arial, sans-serif" font-size="10" fill="#1F2937">• Message Queue: RabbitMQ</text>
+</svg> 

@@ -1,0 +1,67 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: user-service
+    bad_request: 400
+    conflict: 409
+    success: 200
+    not_found: 404
+    created: 201
+
+  datasource:
+    url: jdbc:mysql://mysql-user-db:3306/user-db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: user
+    password: user
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+app:
+  config:
+    keycloak:
+      server-url: http://keycloak:8080
+      realm: banking-service
+      client-id: banking-service-client
+      client-secret: MV3ZixOpL7A79aM54oJD9Sy37LA9ldp3
+
+logging:
+  level:
+    org:
+      training:
+        user:
+          service: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+

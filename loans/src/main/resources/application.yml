@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: loans
+  sql:
+    init:
+      mode: always
+  r2dbc:
+    url: r2dbc:mysql://mysql-loans-db:3306/loans-db
+    username: loans
+    password: loans
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          r2dbc:
+            convert: DEBUG
+        io:
+          r2dbc:
+            spi: DEBUG
+    com:
+      heithered:
+        loans: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+
+

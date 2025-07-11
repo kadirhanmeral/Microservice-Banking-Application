@@ -1,0 +1,565 @@
+services:
+
+  mysql-user:
+    image: mysql:8
+    container_name: mysql-user-db
+    environment:
+      MYSQL_DATABASE: user-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: user
+    ports:
+      - "3311:3306"
+    networks:
+      - bank-net
+    volumes:
+      - user-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mysql-loans:
+    image: mysql:8
+    container_name: mysql-loans-db
+    environment:
+      MYSQL_DATABASE: loans-db
+      MYSQL_USER: loans
+      MYSQL_PASSWORD: loans
+      MYSQL_ROOT_PASSWORD: loans
+    ports:
+      - "3312:3306"
+    networks:
+      - bank-net
+    volumes:
+      - loans-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mysql-payment:
+    image: mysql:8
+    container_name: mysql-payment-db
+    environment:
+      MYSQL_DATABASE: payment-db
+      MYSQL_USER: payment
+      MYSQL_PASSWORD: payment
+      MYSQL_ROOT_PASSWORD: payment
+    ports:
+      - "3313:3306"
+    networks:
+      - bank-net
+    volumes:
+      - payment-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - bank-net
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics ping | grep -q 'Ping succeeded' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  eureka-server:
+    build: ./Service-Registry
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - bank-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8761/actuator/health/readiness || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+      OTEL_SERVICE_NAME: "eureka-server"
+
+  gateway-server:
+    build: ./API-Gateway
+    container_name: gateway-server
+    ports:
+      - "8081:8081"
+    networks:
+      - bank-net
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8081/actuator/health/readiness || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+      OTEL_SERVICE_NAME: "gateway-server"
+
+  user-service:
+    build: ./User-Service
+    container_name: user-service
+    ports:
+      - "8082:8082"
+    networks:
+      - bank-net
+    depends_on:
+      gateway-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8082/actuator/health/readiness || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+      OTEL_SERVICE_NAME: "user-service"
+
+  account-service:
+    build: ./AccountMicroservice
+    container_name: account-service
+    ports:
+      - "8083:8083"
+    networks:
+      - bank-net
+    depends_on:
+      gateway-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      mysql-user:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8083/actuator/health/readiness || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+      OTEL_SERVICE_NAME: "account-service"
+
+  loans-service:
+    build: ./loans
+    container_name: loans-service
+    ports:
+      - "8080:8080"
+    networks:
+      - bank-net
+    depends_on:
+      gateway-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health/readiness || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+      OTEL_SERVICE_NAME: "loans-service"
+
+  payment-service:
+    build: ./payment
+    container_name: payment-service
+    ports:
+      - "8084:8084"
+    networks:
+      - bank-net
+    depends_on:
+      gateway-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8084/actuator/health/readiness || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+      OTEL_SERVICE_NAME: "payment-service"
+
+  minio:
+    image: minio/minio:RELEASE.2024-12-18T13-15-44Z
+    container_name: minio
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /data/loki-data && \
+        mkdir -p /data/loki-ruler && \
+        mkdir -p /data/tempo-data && \
+        minio server /data
+    environment:
+      - MINIO_ROOT_USER=loki
+      - MINIO_ROOT_PASSWORD=supersecret
+      - MINIO_PROMETHEUS_AUTH_TYPE=public
+      - MINIO_UPDATE=off
+    ports:
+      - 9000
+    volumes:
+      - ./.data/minio:/data
+    networks:
+      - bank-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 15s
+      timeout: 20s
+      retries: 5
+
+  read:
+    image: grafana/loki:3.1.2
+    command: "-config.file=/etc/loki/config.yaml -target=read"
+    ports:
+      - 3101:3100
+      - 7946
+      - 9095
+    volumes:
+      - ./observability/loki/loki-config.yaml:/etc/loki/config.yaml
+    depends_on:
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: &loki-dns
+      bank-net:
+        aliases:
+          - loki
+
+
+  write:
+    image: grafana/loki:3.1.2
+    command: "-config.file=/etc/loki/config.yaml -target=write"
+#    command: "-config.file=/etc/loki/config.yaml -target=write,distributor"
+    ports:
+      - 3102:3100
+      - 7946
+      - 9095
+    volumes:
+      - ./observability/loki/loki-config.yaml:/etc/loki/config.yaml
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      minio:
+        condition: service_healthy
+    networks:
+      <<: *loki-dns
+
+  gateway:
+    image: nginx:1.27.3
+    depends_on:
+      - read
+      - write
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        cat <<EOF > /etc/nginx/nginx.conf
+        user  nginx;
+        worker_processes  5;  ## Default: 1
+
+        events {
+          worker_connections   1000;
+        }
+
+        http {
+          resolver 127.0.0.11;
+
+          server {
+            listen             3100;
+
+            location = / {
+              return 200 'OK';
+              auth_basic off;
+            }
+
+            location = /api/prom/push {
+              proxy_pass       http://write:3100\$$request_uri;
+              proxy_connect_timeout 30s;
+              proxy_send_timeout 30s;
+              proxy_read_timeout 30s;
+              proxy_set_header Host \$$host;
+              proxy_set_header X-Real-IP \$$remote_addr;
+              proxy_set_header X-Forwarded-For \$$proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto \$$scheme;
+            }
+
+            location = /api/prom/tail {
+              proxy_pass       http://read:3100\$$request_uri;
+              proxy_set_header Upgrade \$$http_upgrade;
+              proxy_set_header Connection "upgrade";
+              proxy_connect_timeout 30s;
+              proxy_send_timeout 30s;
+              proxy_read_timeout 30s;
+              proxy_set_header Host \$$host;
+              proxy_set_header X-Real-IP \$$remote_addr;
+              proxy_set_header X-Forwarded-For \$$proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto \$$scheme;
+            }
+
+            location ~ /api/prom/.* {
+              proxy_pass       http://read:3100\$$request_uri;
+              proxy_connect_timeout 30s;
+              proxy_send_timeout 30s;
+              proxy_read_timeout 30s;
+              proxy_set_header Host \$$host;
+              proxy_set_header X-Real-IP \$$remote_addr;
+              proxy_set_header X-Forwarded-For \$$proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto \$$scheme;
+            }
+
+            location = /loki/api/v1/push {
+              proxy_pass       http://write:3100\$$request_uri;
+              proxy_connect_timeout 30s;
+              proxy_send_timeout 30s;
+              proxy_read_timeout 30s;
+              proxy_set_header Host \$$host;
+              proxy_set_header X-Real-IP \$$remote_addr;
+              proxy_set_header X-Forwarded-For \$$proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto \$$scheme;
+            }
+
+            location = /loki/api/v1/tail {
+              proxy_pass       http://read:3100\$$request_uri;
+              proxy_set_header Upgrade \$$http_upgrade;
+              proxy_set_header Connection "upgrade";
+              proxy_connect_timeout 30s;
+              proxy_send_timeout 30s;
+              proxy_read_timeout 30s;
+              proxy_set_header Host \$$host;
+              proxy_set_header X-Real-IP \$$remote_addr;
+              proxy_set_header X-Forwarded-For \$$proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto \$$scheme;
+            }
+
+            location ~ /loki/api/.* {
+              proxy_pass       http://read:3100\$$request_uri;
+              proxy_connect_timeout 30s;
+              proxy_send_timeout 30s;
+              proxy_read_timeout 30s;
+              proxy_set_header Host \$$host;
+              proxy_set_header X-Real-IP \$$remote_addr;
+              proxy_set_header X-Forwarded-For \$$proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto \$$scheme;
+            }
+          }
+        }
+        EOF
+        /docker-entrypoint.sh nginx -g "daemon off;"
+    ports:
+      - "3100:3100"
+    healthcheck:
+      test: [ "CMD", "service", "nginx", "status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bank-net
+
+
+  backend:
+    image: grafana/loki:3.1.2
+    command: "-config.file=/etc/loki/config.yaml -target=backend -legacy-read-mode=false"
+    ports:
+      - "3100"
+      - "7946"
+    volumes:
+      - ./observability/loki/loki-config.yaml:/etc/loki/config.yaml
+#      - loki-compactor:/tmp/compactor
+    depends_on:
+      gateway:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    networks:
+      - bank-net
+
+
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - bank-net
+
+
+  tempo:
+    image: grafana/tempo:2.6.1
+    container_name: tempo
+    command: -config.file=/etc/tempo-config.yml
+    ports:
+      - "3110:3100"
+      - "4318:4318"
+    volumes:
+      - ./observability/tempo/tempo.yml:/etc/tempo-config.yml
+    networks:
+      - bank-net
+    depends_on:
+      minio:
+        condition: service_healthy
+      gateway:
+        condition: service_healthy
+
+
+  alloy:
+    image: grafana/alloy:v1.5.1
+    volumes:
+      - ./observability/alloy/alloy-config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+    ports:
+      - "12345:12345"
+    depends_on:
+      - gateway
+    networks:
+      - bank-net
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.0
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HTTP_ENABLED: true
+    ports:
+      - "8572:8080"
+    networks:
+      - bank-net
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    command: start-dev
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  keycloak-db:
+    image: postgres:15
+    container_name: keycloak-db
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    ports:
+      - "5432:5432"
+    networks:
+      - bank-net
+    volumes:
+      - keycloak-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./observability/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bank-net
+    depends_on:
+      - read
+      - tempo
+      - prometheus
+      - gateway
+
+  notification-service:
+    build: ./NotificationService
+    container_name: notification-service
+    ports:
+      - "8085:8085"
+    networks:
+      - bank-net
+    depends_on:
+      - eureka-server
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8085/actuator/health/readiness || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+      OTEL_SERVICE_NAME: "notification-service"
+
+networks:
+  bank-net:
+
+volumes:
+  user-db:
+  keycloak-db:
+  loans-db:
+  payment-db:
+
+  rabbitmq-data:
+#  loki-compactor:
